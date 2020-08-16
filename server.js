@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const Client = new Discord.Client();
-const prefix = "!"
+const prefix = "h"
 
 
 Client.on(`ready`, async function() {
@@ -35,7 +35,7 @@ Client.on("message", async message => {
     }
     function getuseravatar(user) {
     var embed = new Discord.RichEmbed()
-   .setAuthor(user.username, author., 'https://discord.js.org')
+   .setAuthor(user.username, user.avatarURL, user.avatarURL)
     .setColor("RANDOM") //can specifiy color of embed here
     .setImage(user.avatarURL)
     message.channel.send(embed)
