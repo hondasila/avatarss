@@ -1,34 +1,50 @@
-// server.js
-// where your node app starts
+const Discord = require("discord.js");
+const Client = new Discord.Client();
+const prefix = "!"
 
-// we've started you off with Express (https://expressjs.com/)
-// but feel free to use whatever libraries or frameworks you'd like through `package.json`.
-const express = require("express");
-const app = express();
 
-// our default array of dreams
-const dreams = [
-  "Find and count some sheep",
-  "Climb a really tall mountain",
-  "Wash the dishes"
-];
+Client.on(`ready`, async function() {
+console.log(`Logged in`);      
+          });
+          
+Client.on("message", async message => {
+    const args = message.content.slice(prefix.length).trim().split(/ +/g) //arguments
+    const command = args.shift().toLowerCase(); //command
 
-// make all the files in 'public' available
-// https://expressjs.com/en/starter/static-files.html
-app.use(express.static("public"));
+    if (message.content.indexOf(prefix) !== 0) return;
+    
+    if (command == "avatar") {
 
-// https://expressjs.com/en/starter/basic-routing.html
-app.get("/", (request, response) => {
-  response.sendFile(__dirname + "/views/index.html");
-});
+    var user;
+    user = message.mentions.users.first(); //mentioned user, if any
+    if (!user) { //if no one is mentioned
+    if (!args[0]) { //if the command is only "!avatar". I.e. no one is mentioned and no id is specified
+    user = message.author;
+    getuseravatar(user);
+    } else { //if a user id IS specified (need developer mode on on discord to get it)
+    var id = args[0]
+    Client.fetchUser(id).then(user => {
+    getuseravatar(user) //get avatar of the user, whose id is specified
+    
+    }).catch(error => console.log(error))
+    
+    }
+    
+    } else { //if someone IS mentioned
+    getuseravatar(user);
+    }
+    function getuseravatar(user) {
+    var embed = new Discord.RichEmbed()
+   .setAuthor(user.username, author., 'https://discord.js.org')
+    .setColor("RANDOM") //can specifiy color of embed here
+    .setImage(user.avatarURL)
+    message.channel.send(embed)
+    
+    }
+    
+}
+ 
 
-// send the default array of dreams to the webpage
-app.get("/dreams", (request, response) => {
-  // express helps us take JS objects and send them as JSON
-  response.json(dreams);
-});
+})
 
-// listen for requests :)
-const listener = app.listen(process.env.PORT, () => {
-  console.log("Your app is listening on port " + listener.address().port);
-});
+Client.login("NzIwMzAyNjQxMzcyMjAxMDkw.XuEAHA.wGmc9ECIjTqMGfEoQoV1Zq5eF9M")
